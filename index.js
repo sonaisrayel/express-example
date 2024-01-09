@@ -3,7 +3,8 @@ const app = express();
 import bodyParser from 'body-parser';
 
 //middleware
-app.use(bodyParser.json())
+// app.use(bodyParser.json())
+app.use(express.json())
 
 // post - req.body
 // get - params - localhost:3000/5/John  ( /:age/:name )
@@ -15,6 +16,7 @@ app.get("/", (req,res)=> {
 })
 
 app.post('/',(req,res)=> {
+    console.log(req.body)
     res.status(201).end()
 })
 
