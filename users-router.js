@@ -1,12 +1,12 @@
 import { Router } from 'express'
 const router = Router()
 import { isAdmin } from './middlewars/middlwares.js';
-import { getUsers,createUsers,getUser }  from './storages/mongodb.js';
+import { getUsers,getUser,updateUser,deleteUser }  from './storages/mongodb.js';
 
-
-router.get('/',async (req,res) => {
+router.get('/:email?',async (req,res) => {
     try {
-        const users = await getUsers();
+        const { email } = req.params
+        const  users = email ? await getUser({ email }) : await getUsers();
         res.status(201).send({data:users})
     } catch(e){
         res.status(404).send({data:'Something happened'})
@@ -14,28 +14,29 @@ router.get('/',async (req,res) => {
 })
 
 
-router.post('/registration',async (req,res) => {
+router.delete('/',async (req,res)=> {
     try {
-        const { username, email, userType } = req.body
-        const response = await createUsers({username, email, userType})
-
-        res.status(201).send({data: response})
+        const { email } = req.body;
+        const deletedUser = await deleteUser({ email });
+        res.status(200).send({ data:deletedUser })
     } catch (e) {
-        res.status(404).send({data:e.message})
+        res.status(404).send(e.message)
     }
 
 })
 
+router.put('/',async (req,res)=> {
+    try {
+        const { email,username } = req.body
+        await updateUser({email},{username})
+        res.status(204).send({data:"User successfully updated"})
 
-router.post('/login', async (req,res)=> {
-    try{
-        const { email,username } = req.body;
-        const user = await getUser({ email, username })
-        res.status(201).send({data:user})
     } catch (e) {
-        res.status(404).send({data:e.message})
+       res.status(404).send({data:"User is not updated!!!!"})
     }
 })
+
+
 
 export default router
 

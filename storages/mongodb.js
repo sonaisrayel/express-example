@@ -50,6 +50,27 @@ export async function createUsers(user){
 
 }
 
+export async function updateUser(user,update){
+    try {
+        const db = await connectToMongoDB(user);
+        const coll = db.collection('users');
+       // const updatedUser = await coll.updateOne({ a: 3 }, { $set: { b: 1 } });
+       return  await coll.updateOne(user, { $set: update });
+    } catch (e) {
+      throw new Error(e.message)
+    }
+}
+
+export async function deleteUser(user){
+    try {
+        const db = await connectToMongoDB(user);
+        const coll = db.collection('users');
+        return await coll.deleteMany(user);
+    } catch (e) {
+        throw new Error(e.message)
+    }
+}
+
 
 
 
