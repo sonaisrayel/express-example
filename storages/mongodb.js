@@ -16,11 +16,11 @@ async function connectToMongoDB() {
     }
 }
 
-export async function getUsers() {
+export async function get(collection,email= false) {
     try {
         const db = await connectToMongoDB();
-        const coll = db.collection('users');
-        return await coll.find({}).toArray();
+        const coll = db.collection(collection);
+       return email ? await coll.findOne({ email } ) : await coll.find({}).toArray();
      } catch (e) {
         console.log(e.message)
         throw new Error(e.message)
@@ -28,17 +28,7 @@ export async function getUsers() {
 }
 
 
-export async function getUser(user){
-    try {
-        const db = await connectToMongoDB();
-        const coll = db.collection('users');
-        return  await coll.findOne(user);
-    } catch (e) {
-        throw new Error(e.message)
-    }
-}
-
-export async function createUsers(user){
+export async function create(collection, user){
     try{
         const db = await connectToMongoDB();
         const coll = db.collection('users');
@@ -50,26 +40,29 @@ export async function createUsers(user){
 
 }
 
-export async function updateUser(user,update){
+export async function update(collection,user,update){
     try {
         const db = await connectToMongoDB(user);
-        const coll = db.collection('users');
-       // const updatedUser = await coll.updateOne({ a: 3 }, { $set: { b: 1 } });
+        const coll = db.collection(collection);
        return  await coll.updateOne(user, { $set: update });
     } catch (e) {
       throw new Error(e.message)
     }
 }
 
-export async function deleteUser(user){
+export async function del(collection, email){
     try {
-        const db = await connectToMongoDB(user);
-        const coll = db.collection('users');
-        return await coll.deleteMany(user);
+        const db = await connectToMongoDB();
+        const coll = db.collection(collection);
+        return await coll.deleteMany({ email } );
     } catch (e) {
         throw new Error(e.message)
     }
 }
+
+
+
+
 
 
 
