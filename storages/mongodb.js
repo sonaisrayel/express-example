@@ -28,11 +28,11 @@ export async function get(collection,email= false) {
 }
 
 
-export async function create(collection, user){
+export async function create(collection, data){
     try{
         const db = await connectToMongoDB();
-        const coll = db.collection('users');
-        return await coll.insertOne(user);
+        const coll = db.collection(collection);
+        return await coll.insertOne(data);
     } catch (e) {
         console.log("error in createUsers",e.message)
         throw new Error(e.message)
