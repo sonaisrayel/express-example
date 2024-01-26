@@ -5,6 +5,7 @@ import { get,update,del }  from './storages/mongodb.js';
 
 router.get('/:email?',async (req,res) => {
     try {
+
         const { email } = req.params
         const  users = await get('users', email);
         res.status(201).send({data:users})

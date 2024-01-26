@@ -1,23 +1,29 @@
 import { Router } from 'express'
 const router = Router()
-import { isAdmin } from './middlewars/middlwares.js';
 import {get, update, del, create} from './storages/mongodb.js';
 import moment from 'moment'
+
+import JWT from 'jsonwebtoken';
+
+
+
 
 
 router.post('/',async (req,res)=> {
     try {
+        const { authorization } = req.headers;
+        const user = JWT.verify(authorization,'bubu');
         const { title,description,storyPoints } = req.body
         const creationDate = moment().format('YYYY-MM-DD');
         const deadline = moment().add(Number(storyPoints),'days').format('YYYY-MM-DD');
-        await create('todos',{ title,description,creationDate,deadline,completed:false })
+        await create('todos',{ title,description,creationDate,deadline,completed:false, ownerId:user.ownerId })
         res.status(204).send({data:"Todo successfully created"})
     } catch (e) {
         res.status(404).send({data:"Todo is not created!!!!"})
     }
 })
 
-
+//
 // router.get('/:email?',async (req,res) => {
 //     try {
 //         const { email } = req.params
