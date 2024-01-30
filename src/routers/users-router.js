@@ -1,16 +1,9 @@
 import { Router } from 'express'
 const router = Router()
-import { User } from '../models/user-model.js';
 
-router.get ('/',async (req,res) => {
-    try {
-        const filter  = req.query
-        const users = filter ? await User.find(filter) : await User.find({})
-        res.status(201).send({ data:users })
-    } catch(e){
-        res.status(404).send({data:'Something happened'})
-    }
-})
+import { getUser } from '../controllers/users-controller.js'
+
+router.get ('/', getUser)
 
 // router.delete('/',async (req,res)=> {
 //     try {
