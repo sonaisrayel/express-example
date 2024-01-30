@@ -1,12 +1,11 @@
-import { Router } from 'express'
-const router = Router()
-import {get, update, del, create} from './storages/mongodb.js';
 import moment from 'moment'
-
 import JWT from 'jsonwebtoken';
+import { Router } from 'express'
 
+import {connection} from '../storages/db.js'
 
-
+const router = Router()
+import {get, update, del, create} from "../storages/mongodb.js";
 
 
 router.post('/',async (req,res)=> {
