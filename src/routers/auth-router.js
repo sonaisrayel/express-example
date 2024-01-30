@@ -7,14 +7,14 @@ const secret = 'bubu'
 router.post('/login', async (req,res)=> {
     try{
         const { email,password } = req.body;
-        const user = await User.find({ email,password })
+        const user = await User.find({ email,password }).select('-password');
 
-        if(!user.length){
-            throw new Error("You are not registrated!!!")
+        if (!user.length){
+            throw new Error("You are not registered!!!")
         }
 
         const [userInfo] = user
-        const token =  JWT.sign({ email,username:userInfo.username }, secret,{expiresIn: '15m'})
+        const token =  JWT.sign({_id:userInfo._id,email,username:userInfo.username }, secret,{expiresIn: '15d'})
         res.status(201).send({data: user,token})
     } catch (e) {
         res.status(404).send({data:e.message})

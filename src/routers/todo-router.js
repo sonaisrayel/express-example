@@ -1,37 +1,44 @@
 import moment from 'moment'
 import JWT from 'jsonwebtoken';
 import { Router } from 'express'
-
-import {connection} from '../storages/db.js'
-
 const router = Router()
-import {get, update, del, create} from "../storages/mongodb.js";
 
+import { Todo } from '../models/todo-model.js';
 
 router.post('/',async (req,res)=> {
     try {
         const { authorization } = req.headers;
-        const user = JWT.verify(authorization,'bubu');
         const { title,description,storyPoints } = req.body
-        const creationDate = moment().format('YYYY-MM-DD');
+
+        const user = JWT.verify(authorization,'bubu');
         const deadline = moment().add(Number(storyPoints),'days').format('YYYY-MM-DD');
-        await create('todos',{ title,description,creationDate,deadline,completed:false, ownerId:user.ownerId })
-        res.status(204).send({data:"Todo successfully created"})
+        await Todo.create({ title,description,contributor:user._id, storyPoints,deadline})
+        const todo = await Todo.find({title})
+        res.status(201).send({ data:todo })
     } catch (e) {
-        res.status(404).send({data:"Todo is not created!!!!"})
+        res.status(404).send({data:e.message})
     }
 })
 
-//
-// router.get('/:email?',async (req,res) => {
-//     try {
-//         const { email } = req.params
-//         const  users = await get('users', email);
-//         res.status(201).send({data:users})
-//     } catch(e){
-//         res.status(404).send({data:'Something happened'})
-//     }
-// })
+
+router.get('/',async (req,res) => {
+    try {
+        const filter= req.query
+        const { authorization } = req.headers;
+
+        const user = JWT.verify(authorization,'bubu');
+        const  todo = await Todo.find(filter);
+
+        if(user.id !== todo[0].contributor){
+          throw new Error("You are no allow to read  others todos")
+        }
+
+        res.status(201).send({data:todo})
+
+    } catch(e){
+        res.status(404).send({data:e.message})
+    }
+})
 
 // router.delete('/',async (req,res)=> {
 //     try {
