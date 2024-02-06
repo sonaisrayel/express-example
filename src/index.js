@@ -2,6 +2,10 @@ import express from "express";
 const app = express();
 import { connection }  from "./storages/db.js";
 
+import 'dotenv/config'
+const  {PORT} = process.env
+
+
 
 connection()
 
@@ -19,8 +23,8 @@ app.use('/users', userRouter)
 app.use('/todos', todoRouter)
 
 
-app.listen(3000,()=> {
-    console.log(`Server started at port 3000`)
+app.listen(PORT,()=> {
+    console.log(`Server started at port ${PORT}`)
 })
 
 
