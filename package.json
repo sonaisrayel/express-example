@@ -1,22 +1,29 @@
 {
-  "name": "project",
-  "version": "1.0.1",
-  "description": "A simple node-express application",
-  "main": "index.js",
-  "type": "module",
-  "scripts": {
-    "start": "nodemon src/index"
-  },
-  "author": "agbu developers",
-  "license": "ISC",
-  "dependencies": {
-    "dotenv": "^16.4.1",
-    "express": "^4.18.2",
-    "jsonwebtoken": "^9.0.2",
-    "moment": "^2.30.1",
-    "mongoose": "^8.1.1"
-  },
-  "devDependencies": {
-    "nodemon": "^3.0.2"
-  }
+    "name": "project",
+    "version": "1.0.1",
+    "description": "A simple node-express application",
+    "main": "index.js",
+    "type": "module",
+    "scripts": {
+        "start": "nodemon src/index",
+        "prettier": "prettier '**/*.{js,json,yml}' --write",
+        "lint": "eslint -c .eslintrc --ext .js .",
+        "lint:fix": "npm run lint -- --fix"
+    },
+    "author": "agbu developers",
+    "license": "ISC",
+    "dependencies": {
+        "dotenv": "^16.4.1",
+        "express": "^4.18.2",
+        "jsonwebtoken": "^9.0.2",
+        "moment": "^2.30.1",
+        "mongoose": "^8.1.1"
+    },
+    "devDependencies": {
+        "nodemon": "^3.0.2",
+        "eslint": "^8.34.0",
+        "eslint-config-prettier": "^8.5.0",
+        "eslint-plugin-prettier": "^4.2.1",
+        "prettier": "^2.7.1"
+    }
 }

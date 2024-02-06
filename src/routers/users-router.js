@@ -1,9 +1,9 @@
-import { Router } from 'express'
-const router = Router()
+import { Router } from 'express';
+const router = Router();
 
-import { getUser } from '../controllers/users-controller.js'
+import { getUser } from '../controllers/users-controller.js';
 
-router.get ('/', getUser)
+router.get('/', getUser);
 
 // router.delete('/',async (req,res)=> {
 //     try {
@@ -26,9 +26,4 @@ router.get ('/', getUser)
 //     }
 // })
 
-export default router
-
-
-
-
-
+export default router;

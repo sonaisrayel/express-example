@@ -1,31 +1,24 @@
-import express from "express";
+import 'dotenv/config';
+
+import express from 'express';
 const app = express();
-import { connection }  from "./storages/db.js";
 
-import 'dotenv/config'
-const  {PORT} = process.env
+import { connection } from './storages/db.js';
+const { PORT } = process.env;
 
+connection();
 
-
-connection()
-
-
-import userRouter from '../src/routers/users-router.js'
-import todoRouter from '../src/routers/todo-router.js'
-import authRouter from '../src/routers/auth-router.js'
-
+import userRouter from '../src/routers/users-router.js';
+import todoRouter from '../src/routers/todo-router.js';
+import authRouter from '../src/routers/auth-router.js';
 
 //middleware
 
-app.use(express.json())
-app.use('/auth', authRouter)
-app.use('/users', userRouter)
-app.use('/todos', todoRouter)
+app.use(express.json());
+app.use('/auth', authRouter);
+app.use('/users', userRouter);
+app.use('/todos', todoRouter);
 
-
-app.listen(PORT,()=> {
-    console.log(`Server started at port ${PORT}`)
-})
-
-
-
+app.listen(PORT, () => {
+    console.log(`Server started at port ${PORT}`);
+});
