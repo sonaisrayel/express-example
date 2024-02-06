@@ -16,6 +16,7 @@ import authRouter from '../src/routers/auth-router.js';
 
 app.use(express.json());
 app.use('/auth', authRouter);
+
 app.use('/users', userRouter);
 app.use('/todos', todoRouter);
 
