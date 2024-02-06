@@ -18,10 +18,9 @@ async function connectToMongoDB() {
 
 export async function get(collection,email= false) {
     try {
-
         const db = await connectToMongoDB();
         const coll = db.collection(collection);
-       return email ? await coll.findOne({ email } ) : await coll.find({}).toArray();
+        return email ? await coll.findOne({ email } ) : await coll.find({}).toArray();
      } catch (e) {
         console.log(e.message)
         throw new Error(e.message)

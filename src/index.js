@@ -1,9 +1,15 @@
 import express from "express";
 const app = express();
+import { connection }  from "./storages/db.js";
 
-import userRouter from './users-router.js'
-import todoRouter from './todo-router.js'
-import authRouter from './auth-router.js'
+
+connection()
+
+
+import userRouter from '../src/routers/users-router.js'
+import todoRouter from '../src/routers/todo-router.js'
+import authRouter from '../src/routers/auth-router.js'
+
 
 //middleware
 
