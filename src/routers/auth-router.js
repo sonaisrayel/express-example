@@ -2,7 +2,7 @@ import router from "./users-router.js";
 import JWT from 'jsonwebtoken';
 import { User } from '../models/user-model.js';
 
-const secret = 'bubu'
+const  { SECRET } = process.env
 
 router.post('/login', async (req,res)=> {
     try{
@@ -14,7 +14,7 @@ router.post('/login', async (req,res)=> {
         }
 
         const [userInfo] = user
-        const token =  JWT.sign({_id:userInfo._id,email,username:userInfo.username }, secret,{expiresIn: '15d'})
+        const token =  JWT.sign({_id:userInfo._id,email,username:userInfo.username }, SECRET,{expiresIn: '15d'})
         res.status(201).send({data: user,token})
     } catch (e) {
         res.status(404).send({data:e.message})
