@@ -7,6 +7,6 @@ export const createUserToken = async (data) => {
 };
 
 export const verifyUserToken = async (token) => {
-    const user = await  JWT.verify(token, SECRET);
+    const user = await JWT.verify(token, SECRET);
     return user;
 };

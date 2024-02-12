@@ -8,4 +8,8 @@ export default class ResponseHandler {
     static handlePostResponse(res, data) {
         return res.status(HttpStatusCodes.CREATED).send(data);
     }
+
+    static handleDeleteResponse(res, data) {
+        return res.status(HttpStatusCodes.ACCEPTED).send(data);
+    }
 }

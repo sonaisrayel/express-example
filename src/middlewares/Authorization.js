@@ -1,17 +1,13 @@
-import JWT from 'jsonwebtoken';
 import { verifyUserToken } from '../libs/jwt-lib.js';
 
 export default class Authorization {
-
     static async authorized(req, res, next) {
-
-        const { authorization } = req.headers;
-        const user = await verifyUserToken(authorization);
-
-        if (user) {
+        try {
+            const { authorization } = req.headers;
+            req.userInfo = await verifyUserToken(authorization);
             next();
-        } else {
-           return res.send('error!!!!')
+        } catch (e) {
+            return next(e.message);
         }
     }
 }
