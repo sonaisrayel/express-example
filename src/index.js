@@ -4,6 +4,7 @@ import express from 'express';
 const app = express();
 
 import { connection } from './storages/db.js';
+import Authorization from './middlewares/Authorization.js';
 const { PORT } = process.env;
 
 connection();
@@ -17,6 +18,7 @@ import authRouter from '../src/routers/auth-router.js';
 app.use(express.json());
 app.use('/auth', authRouter);
 
+app.use(Authorization.authorized);
 app.use('/users', userRouter);
 app.use('/todos', todoRouter);
 

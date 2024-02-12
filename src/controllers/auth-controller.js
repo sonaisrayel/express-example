@@ -1,7 +1,7 @@
 import { User } from '../models/user-model.js';
 import JWT from 'jsonwebtoken';
 
-import {makeHash,compare} from '../libs/crypto-lib.js';
+import { makeHash, compare } from '../libs/crypto-lib.js';
 
 const { SECRET } = process.env;
 
@@ -12,7 +12,7 @@ export const login = async (req, res) => {
 
         const [userParams] = userInfo;
 
-        const user =  await  compare(password,userParams)
+        const user = await compare(password, userParams);
 
         if (!user) {
             throw new Error('You are not registered!!!');
