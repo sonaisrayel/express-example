@@ -2,6 +2,8 @@ import { User } from '../models/user-model.js';
 import JWT from 'jsonwebtoken';
 
 import { makeHash, compare } from '../libs/crypto-lib.js';
+import jwtLib from '../libs/jwt-lib.js';
+import ResponseHandler from "../utils/ResponseHandler.js";
 
 const { SECRET } = process.env;
 
@@ -15,14 +17,15 @@ export const login = async (req, res) => {
         const user = await compare(password, userParams);
 
         if (!user) {
-            throw new Error('You are not registered!!!');
+            throw new Error('Something happened , try again !!!');
         }
 
-        const token = JWT.sign(
+        const token = await jwtLib.createUserToken(
             { _id: userParams._id, email: userParams.email, username: userParams.username },
             SECRET,
             { expiresIn: '15d' }
         );
+
         res.status(201).send({ data: { email: userParams.email, username: userParams.username }, token });
     } catch (e) {
         res.status(404).send({ data: e.message });
@@ -48,7 +51,7 @@ export const registration = async (req, res) => {
         await newUser.save();
 
         // const response = await User.create({ username, email, password });
-        res.status(201).send({ data: {username: newUser.username, email:newUser.email} });
+        res.status(201).send({ data: { username: newUser.username, email: newUser.email } });
     } catch (e) {
         res.status(401).send({ data: e.message });
     }
