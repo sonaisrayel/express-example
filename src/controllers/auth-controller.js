@@ -47,7 +47,7 @@ export const registration = async (req, res) => {
 
         await newUser.save();
 
-        const user = await User.findOne({ username: newUser.username });
+        const user = await User.findOne({ username: newUser.username }).select('-password');
 
         // const response = await User.create({ username, email, password });
         res.status(201).send({ data: user });
