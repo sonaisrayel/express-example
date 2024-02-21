@@ -5,6 +5,9 @@ import ResponseHandler from '../utils/ResponseHandler.js';
 export const getTodos = async (req, res) => {
     try {
         const { userInfo } = req;
+        if(!userInfo){
+            throw new Error("user info not provided!!!!")
+        }
         const todo = await Todo.find({ contributor: userInfo._id });
 
         return ResponseHandler.handleGetResponse(res, todo);
