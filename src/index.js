@@ -22,6 +22,10 @@ app.use(Authorization.authorized);
 app.use('/users', userRouter);
 app.use('/todos', todoRouter);
 
+app.use((err, req, res, next) => {
+    res.status(404).send({ message:err })
+})
+
 app.listen(PORT, () => {
     console.log(`Server started at port ${PORT}`);
 });
