@@ -1,0 +1,23 @@
+{
+  "apps": [
+    {
+      "name": "Todo Project",
+      "script": "src/index.js",
+      "env": {
+        "PORT": "3000"
+
+      }
+    }
+  ],
+  "deploy": {
+    "production": {
+      "user": "root",
+      "host": "165.232.151.194",
+      "ref": "origin/master",
+      "repo": "git@github.com:sonaisrayel/express-example.git",
+      "path": "/home/student/todo-project",
+      "pre-deploy-local": "scp ecosystem.json root@165.232.151.194:'/home/student/todo-project'",
+      "post-deploy": "export NODE_OPTIONS=--max-old-space-size=30240 && npm install --silent && pm2 startOrRestart /home/student/todo-project/ecosystem.json --env production && rm /home/student/todo-project/ecosystem.json"
+    }
+  }
+}
