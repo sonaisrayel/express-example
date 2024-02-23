@@ -8,7 +8,8 @@
         "start": "nodemon src/index",
         "prettier": "prettier '**/*.{js,json,yml}' --write",
         "lint": "eslint -c .eslintrc --ext .js .",
-        "lint:fix": "npm run lint -- --fix"
+        "lint:fix": "npm run lint -- --fix",
+        "deploy": "pm2 deploy ecosystem.json production update"
     },
     "author": "agbu developers",
     "license": "ISC",
