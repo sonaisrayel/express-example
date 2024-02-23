@@ -36,12 +36,15 @@ export const createTodo = async (req, res) => {
     try {
         const { userInfo } = req;
         const { title, description, storyPoints } = req.body;
+
+        console.log(userInfo,'userInfo');
+
         if (!userInfo) {
             return ResponseHandler.handleErrorResponse('You are not authorized!!!', res);
         }
 
         const deadline = moment().add(Number(storyPoints), 'days').format('YYYY-MM-DD');
-        await Todo.create({ title, description, contributor: userInfo.id, storyPoints, deadline });
+        await Todo.create({ title, description, contributor: userInfo._id, storyPoints, deadline });
         const todo = await Todo.find({ title });
         return ResponseHandler.handlePostResponse(res, todo);
     } catch (e) {
