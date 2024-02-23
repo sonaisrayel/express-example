@@ -46,9 +46,7 @@ export const registration = async (req, res) => {
         });
 
         await newUser.save();
-
-        // const response = await User.create({ username, email, password });
-        res.status(201).send({ data: {username: newUser.username, email:newUser.email} });
+        res.status(201).send({ data: { username: newUser.username, email: newUser.email } });
     } catch (e) {
         res.status(401).send({ data: e.message });
     }
