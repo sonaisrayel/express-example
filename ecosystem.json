@@ -4,7 +4,8 @@
       "name": "Todo Project",
       "script": "src/index.js",
       "env": {
-        "PORT": "3000"
+        "PORT": "3000",
+         "MONGOURL":"mongodb+srv://agbu:cX7hVLBaWgOckIrq@cluster0.w5tklqg.mongodb.net/todo"
 
       }
     }

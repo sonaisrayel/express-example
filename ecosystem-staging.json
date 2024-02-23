@@ -1,0 +1,24 @@
+{
+  "apps": [
+    {
+      "name": "Todo Project Staging",
+      "script": "src/index.js",
+      "env": {
+        "PORT": "4000",
+         "MONGOURL":"mongodb+srv://agbu:cX7hVLBaWgOckIrq@cluster0.w5tklqg.mongodb.net/todo"
+
+      }
+    }
+  ],
+  "deploy": {
+    "staging": {
+      "user": "root",
+      "host": "165.232.151.194",
+      "ref": "origin/stage_master",
+      "repo": "git@github.com:sonaisrayel/express-example.git",
+      "path": "/home/student/staging/todo-project",
+      "pre-deploy-local": "scp ecosystem.json root@165.232.151.194:'/home/student/staging/todo-project'",
+      "post-deploy": "export NODE_OPTIONS=--max-old-space-size=30240 && npm install --silent && pm2 startOrRestart /home/student/staging/todo-project/ecosystem-staging.json --env staging && rm /home/student/staging/todo-project/ecosystem-staging.json"
+    }
+  }
+}
