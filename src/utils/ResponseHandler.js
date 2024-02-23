@@ -12,4 +12,8 @@ export default class ResponseHandler {
     static handleDeleteResponse(res, data) {
         return res.status(HttpStatusCodes.ACCEPTED).send(data);
     }
+
+    static handleErrorResponse(err, res) {
+        return res.status(HttpStatusCodes.NOT_FOUND).send(err);
+    }
 }

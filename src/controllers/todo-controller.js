@@ -5,14 +5,14 @@ import ResponseHandler from '../utils/ResponseHandler.js';
 export const getTodos = async (req, res) => {
     try {
         const { userInfo } = req;
-        if(!userInfo){
-            throw new Error("user info not provided!!!!")
+        if (!userInfo) {
+            return ResponseHandler.handleErrorResponse('User info not provided !!!', res);
         }
         const todo = await Todo.find({ contributor: userInfo._id });
 
         return ResponseHandler.handleGetResponse(res, todo);
     } catch (e) {
-        res.status(404).send({ data: e.message });
+        return ResponseHandler.handleErrorResponse(e.message, res);
     }
 };
 
@@ -23,12 +23,12 @@ export const getTodo = async (req, res) => {
         const todo = await Todo.find({ _id: id });
 
         if (todo.contributor !== userInfo.id) {
-            throw new Error('You are not allow to read this todo');
+            return ResponseHandler.handleErrorResponse('You are not allow to read this todo', res);
         }
 
         return ResponseHandler.handleGetResponse(res, todo);
     } catch (e) {
-        res.status(404).send({ data: e.message });
+        return ResponseHandler.handleErrorResponse(e.message, res);
     }
 };
 
@@ -37,7 +37,7 @@ export const createTodo = async (req, res) => {
         const { userInfo } = req;
         const { title, description, storyPoints } = req.body;
         if (!userInfo) {
-            throw new Error('You are not authorized!!!');
+            return ResponseHandler.handleErrorResponse('You are not authorized!!!', res);
         }
 
         const deadline = moment().add(Number(storyPoints), 'days').format('YYYY-MM-DD');
@@ -45,7 +45,7 @@ export const createTodo = async (req, res) => {
         const todo = await Todo.find({ title });
         return ResponseHandler.handlePostResponse(res, todo);
     } catch (e) {
-        res.status(404).send({ data: e.message });
+        return ResponseHandler.handleErrorResponse(e.message, res);
     }
 };
 
@@ -58,11 +58,11 @@ export const updateTodo = async (req, res) => {
         const updatedTodo = await Todo.findOneAndUpdate({ _id: id, contributor: userInfo._id }, payload, { new: true });
 
         if (!updatedTodo) {
-            throw new Error('You are not owner of this todo!!!');
+            return ResponseHandler.handleErrorResponse('You are not owner of this todo!!!', res);
         }
         return ResponseHandler.handlePostResponse(res, updatedTodo);
     } catch (e) {
-        res.status(404).send({ data: e.message });
+        return ResponseHandler.handleErrorResponse(e.message, res);
     }
 };
 
@@ -72,11 +72,12 @@ export const deleteTodo = async (req, res) => {
         const { id } = req.params;
 
         const deleteTodo = await Todo.findOneAndDelete({ _id: id, contributor: userInfo._id });
+
         if (!deleteTodo) {
-            throw new Error('Todo is not found!!!');
+            return ResponseHandler.handleErrorResponse('Todo is not found!!!', res);
         }
         return ResponseHandler.handleDeleteResponse(res, deleteTodo);
     } catch (e) {
-        res.status(404).send({ data: e.message });
+        return ResponseHandler.handleErrorResponse(e.message, res);
     }
 };
