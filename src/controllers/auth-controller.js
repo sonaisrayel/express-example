@@ -1,9 +1,8 @@
 import { User } from '../models/user-model.js';
-import JWT from 'jsonwebtoken';
+import ResponseHandler from '../utils/ResponseHandler.js';
 
-import { makeHash, compare } from '../libs/crypto-lib.js';
-
-const { SECRET } = process.env;
+import CryptoLib from '../libs/crypto-lib.js'
+import JWTLib from '../libs/jwt-lib.js'
 
 export const login = async (req, res) => {
     try {
@@ -12,20 +11,16 @@ export const login = async (req, res) => {
 
         const [userParams] = userInfo;
 
-        const user = await compare(password, userParams);
+        const user = await CryptoLib.compare(password, userParams)
 
         if (!user) {
-            throw new Error('You are not registered!!!');
+            return ResponseHandler.handleErrorResponse('You are not registered !!!', res);
         }
 
-        const token = JWT.sign(
-            { _id: userParams._id, email: userParams.email, username: userParams.username },
-            SECRET,
-            { expiresIn: '15d' }
-        );
-        res.status(201).send({ data: { email: userParams.email, username: userParams.username }, token });
+        const token = await JWTLib.createUserToken({ _id: userParams._id, email: userParams.email, username: userParams.username })
+        return ResponseHandler.handleGetResponse(res,{ data: { email: userParams.email, username: userParams.username }, token });
     } catch (e) {
-        res.status(404).send({ data: e.message });
+        return ResponseHandler.handleErrorResponse(e.message, res);
     }
 };
 
@@ -34,10 +29,10 @@ export const registration = async (req, res) => {
         const { username, email, password, repeatPassword } = req.body;
 
         if (password !== repeatPassword) {
-            throw new Error('Passwords doesnt match');
+            return ResponseHandler.handleErrorResponse('Passwords doesnt match',res);
         }
 
-        const passwordHash = await makeHash(password);
+        const passwordHash = await CryptoLib.makeHash(password);
 
         const newUser = new User({
             username,
@@ -46,8 +41,9 @@ export const registration = async (req, res) => {
         });
 
         await newUser.save();
-        res.status(201).send({ data: { username: newUser.username, email: newUser.email } });
+        const user = await User.findOne({ username: newUser.username}).select('-password');
+        return ResponseHandler.handleGetResponse(res,{ data: user});
     } catch (e) {
-        res.status(401).send({ data: e.message });
+        return ResponseHandler.handleErrorResponse(e.message, res);
     }
 };
