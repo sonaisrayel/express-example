@@ -9,7 +9,7 @@
         "prettier": "prettier '**/*.{js,json,yml}' --write",
         "lint": "eslint -c .eslintrc --ext .js .",
         "lint:fix": "npm run lint -- --fix",
-        "deploy": "pm2 deploy ecosystem.json production update"
+        "deploy": "pm2 deploy ecosystem.json prod update"
     },
     "author": "agbu developers",
     "license": "ISC",
