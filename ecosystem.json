@@ -17,7 +17,7 @@
             "repo": "git@github.com:sonaisrayel/express-example.git",
             "path": "/home/student/todo-project",
             "pre-deploy-local": "scp ecosystem.json root@165.232.151.194:'/home/student/todo-project'",
-            "post-deploy": "export PATH=$PATH:/path/to/node/bin && npm install --silent && pm2 startOrRestart /home/student/todo-project/ecosystem.json --env prod && rm /home/student/todo-project/ecosystem.json"
+            "post-deploy": "export PATH=$PATH:/root/.nvm/versions/node/v18.19.1/bin && npm install --silent && pm2 startOrRestart /home/student/todo-project/ecosystem.json --env prod && rm /home/student/todo-project/ecosystem.json"
         }
     }
 }
