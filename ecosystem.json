@@ -10,7 +10,7 @@
         }
     ],
     "deploy": {
-        "production": {
+        "prod": {
             "user": "root",
             "host": "165.232.151.194",
             "ref": "origin/master",
