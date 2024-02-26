@@ -18,7 +18,7 @@ export const login = async (req, res) => {
         }
 
         const token = await JWTLib.createUserToken({ _id: userParams._id, email: userParams.email, username: userParams.username })
-        return ResponseHandler.handleGetResponse({ data: { email: userParams.email, username: userParams.username }, token });
+        return ResponseHandler.handleGetResponse(res,{ data: { email: userParams.email, username: userParams.username }, token });
     } catch (e) {
         return ResponseHandler.handleErrorResponse(e.message, res);
     }
@@ -29,7 +29,7 @@ export const registration = async (req, res) => {
         const { username, email, password, repeatPassword } = req.body;
 
         if (password !== repeatPassword) {
-            return ResponseHandler.handleErrorResponse('Passwords doesnt match');
+            return ResponseHandler.handleErrorResponse('Passwords doesnt match',res);
         }
 
         const passwordHash = await CryptoLib.makeHash(password);
@@ -42,7 +42,7 @@ export const registration = async (req, res) => {
 
         await newUser.save();
         const user = await User.findOne({ username: newUser.username}).select('-password');
-        return ResponseHandler.handleGetResponse({ data: user});
+        return ResponseHandler.handleGetResponse(res,{ data: user});
     } catch (e) {
         return ResponseHandler.handleErrorResponse(e.message, res);
     }
